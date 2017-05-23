@@ -1,7 +1,11 @@
-int size = 8;
-int w = 200;
-int h = 100;
-int tam = 40;
+import controlP5.*;
+
+ControlP5 cp5;
+
+int size = 2;
+int w = 850;
+int h = 400;
+int tam = 100;
 int value = 3;
 boolean play = true;
 boolean mesh = false;
@@ -18,11 +22,18 @@ Engine engine;
 
 void setup() {
   size(1700, 900, P3D);
+  cp5 = new ControlP5(this);
+  cp5.addSlider("size")
+       .setPosition(0, 0)
+       .setSize(1700, 20)
+       .setRange(1, 15)
+       .setValue(size)
+       .setColorCaptionLabel(color(20,20,20));
   drawer = new Drawer();
   if(is3D) {
-   engine = new Engine3D(size, tam, drawer, limits);
+   engine = new Engine3D(tam, drawer, limits);
   } else {
-   engine = new Engine2D(size, w, h, drawer, limits, mesh); 
+   engine = new Engine2D(w, h, drawer, limits, mesh); 
   }
   engine.init(value);
 }
@@ -60,7 +71,23 @@ void keyPressed() {
     engine.setLimits(limits);
   } else if(key == 'r' || key == 'R') {
     engine.resetBoard();
-  } else if(key == 'f' && framerate > 5) {
+  } else if(key == 'z' || key == 'Z') {
+    if(is3D) {
+      is3D = false;
+      engine = new Engine2D(w, h, drawer, limits, mesh);
+    } else {
+      is3D = true;
+      engine = new Engine3D(tam, drawer, limits);
+    }
+    engine.init(value);
+  } else if(key >= '3' && key <= '9') {
+    value = int(key) - 48;
+    engine.init(value);
+  }
+}
+
+void keyReleased() {
+  if(key == 'f' && framerate > 5) {
     framerate -= 5;
     frameRate(framerate);
   } else if(key == 'F' && framerate < 100) {
@@ -68,18 +95,6 @@ void keyPressed() {
     frameRate(framerate);
   } else if(key == 'n' || key == 'N') {
     engine.nextIteration();
-  } else if(key == 'z' || key == 'Z') {
-    if(is3D) {
-      is3D = false;
-      engine = new Engine2D(size, w, h, drawer, limits, mesh);
-    } else {
-      is3D = true;
-      engine = new Engine3D(size, tam, drawer, limits);
-    }
-    engine.init(value);
-  } else if(key >= '3' && key <= '9') {
-    value = int(key) - 48;
-    engine.init(value);
   }
 }
 
@@ -94,7 +109,7 @@ void draw() {
       
       pushMatrix();
       translate(-((tam * size) / 2) + size / 2, -((tam * size) / 2) + size / 2, -((tam * size) / 2) + size / 2);
-      engine.drawMesh();
+      engine.drawMesh(size);
       popMatrix();
       
       noFill();
@@ -102,7 +117,7 @@ void draw() {
       box(tam * size);
     } else {
       translate((width - (w * size)) / 2, (height - (h * size)) / 2,0);
-      engine.drawMesh();
+      engine.drawMesh(size);
       
       noFill();
       stroke(255);

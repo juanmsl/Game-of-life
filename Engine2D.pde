@@ -6,8 +6,8 @@ public class Engine2D extends Engine {
   public int h;
   public boolean mesh;
   
-  public Engine2D(int size, int w, int h, Drawer drawer, boolean limits, boolean mesh) {
-    super(size, drawer, limits);
+  public Engine2D(int w, int h, Drawer drawer, boolean limits, boolean mesh) {
+    super(drawer, limits);
     this.w = w + 2;
     this.h = h + 2;
     this.mesh = mesh;
@@ -93,7 +93,7 @@ public class Engine2D extends Engine {
     this.limits = limits;
   }
   
-  public void drawMesh() {
+  public void drawMesh(int size) {
     for(int i = 1; i < w - 1; i++) {
       for(int j = 1; j < h - 1; j++) {
         if(board[i][j][0]) {

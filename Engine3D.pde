@@ -4,8 +4,8 @@ public class Engine3D extends Engine {
   public int ks[] = {-1,-1,-1,-1,-1,-1,-1,-1,-1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1};
   public int tam;
   
-  public Engine3D(int size, int tam, Drawer drawer, boolean limits) {
-    super(size, drawer, limits);
+  public Engine3D(int tam, Drawer drawer, boolean limits) {
+    super(drawer, limits);
     this.tam = tam + 2;
   }
   
@@ -74,9 +74,9 @@ public class Engine3D extends Engine {
       }
     }
     if(board[i][j][k]) {
-      return count == 3 || count == 5;
+      return count == 5 || count == 6;
     } else {
-      return count == 3;
+      return count == 5;
     }
   }
   
@@ -99,7 +99,7 @@ public class Engine3D extends Engine {
     this.limits = limits;
   }
   
-  public void drawMesh() {
+  public void drawMesh(int size) {
     float total = (tam - 2) * (tam - 2) * (tam - 2);
     float count = 0;
     float pass = 360.0f / total;
@@ -108,7 +108,7 @@ public class Engine3D extends Engine {
       for(int j = 1; j < tam - 1; j++) {
         for(int k = 1; k < tam - 1; k++) {
           if(board[i][j][k]) {
-            this.drawer.drawFillBox(i - 1, j - 1, k - 1, size, color(pass * count, 100, 50));
+            this.drawer.drawFillBox(i - 1, j - 1, k - 1, size, color(pass * count, 100, 50, 150));
           }
           count++;
         }

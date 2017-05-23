@@ -19,7 +19,7 @@ public class Drawer {
   public void drawFillBox(int i, int j, int k, int size, color c) {
     pushMatrix();
     fill(c);
-    stroke(negro);
+    noStroke();
     translate(i * size, j * size, k * size);
     box(size);
     popMatrix();
