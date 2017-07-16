@@ -4,8 +4,8 @@ public class Engine3D extends Engine {
   public int ks[] = {-1,-1,-1,-1,-1,-1,-1,-1,-1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1};
   public int tam;
   
-  public Engine3D(int tam, Drawer drawer, boolean limits) {
-    super(drawer, limits);
+  public Engine3D(String pattern, int tam, Drawer drawer, boolean limits) {
+    super(pattern, drawer, limits);
     this.tam = tam + 2;
   }
   
@@ -14,7 +14,7 @@ public class Engine3D extends Engine {
     for(int i = 1; i < tam - 1; i++) {
       for(int j = 1; j < tam - 1; j++) {
         for(int k = 1; k < tam - 1; k++) {
-          setCell(board, i, j, k, (i + j + k) % n == 0);
+          setCell(board, i, j, k, (int)random(1, n) % 2 == 0);
         }
       }
     }
@@ -73,11 +73,17 @@ public class Engine3D extends Engine {
         count++;
       }
     }
+     boolean result = false;
     if(board[i][j][k]) {
-      return count == 5 || count == 6;
+      for(int p = 0; p < alive.length; p++) {
+        result |= count == alive[p];
+      }
     } else {
-      return count == 5;
+      for(int p = 0; p < born.length; p++) {
+        result |= count == born[p];
+      }
     }
+    return result;
   }
   
   public void changeCell(int i, int j, int k) {
@@ -108,7 +114,7 @@ public class Engine3D extends Engine {
       for(int j = 1; j < tam - 1; j++) {
         for(int k = 1; k < tam - 1; k++) {
           if(board[i][j][k]) {
-            this.drawer.drawFillBox(i - 1, j - 1, k - 1, size, color(pass * count, 100, 50, 150));
+            this.drawer.drawFillBox(i - 1, j - 1, k - 1, size, color(pass * count, 100, 50, 120));
           }
           count++;
         }

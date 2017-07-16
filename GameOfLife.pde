@@ -2,15 +2,17 @@ import controlP5.*;
 
 ControlP5 cp5;
 
-int size = 2;
-int w = 850;
-int h = 400;
+int size = 8;
+int w = 200;
+int h = 100;
 int tam = 100;
 int value = 3;
 boolean play = true;
 boolean mesh = false;
 boolean limits = true;
 boolean is3D = false;
+String pattern2d = "12345/3";
+String pattern3d = "1/1";
 
 int px = 0, py = 0;
 float rotX = 0;
@@ -31,9 +33,9 @@ void setup() {
        .setColorCaptionLabel(color(20,20,20));
   drawer = new Drawer();
   if(is3D) {
-   engine = new Engine3D(tam, drawer, limits);
+   engine = new Engine3D(pattern3d, tam, drawer, limits);
   } else {
-   engine = new Engine2D(w, h, drawer, limits, mesh); 
+   engine = new Engine2D(pattern2d, w, h, drawer, limits, mesh); 
   }
   engine.init(value);
 }
@@ -74,10 +76,10 @@ void keyPressed() {
   } else if(key == 'z' || key == 'Z') {
     if(is3D) {
       is3D = false;
-      engine = new Engine2D(w, h, drawer, limits, mesh);
+      engine = new Engine2D(pattern2d, w, h, drawer, limits, mesh);
     } else {
       is3D = true;
-      engine = new Engine3D(tam, drawer, limits);
+      engine = new Engine3D(pattern3d, tam, drawer, limits);
     }
     engine.init(value);
   } else if(key >= '3' && key <= '9') {

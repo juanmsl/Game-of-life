@@ -6,8 +6,8 @@ public class Engine2D extends Engine {
   public int h;
   public boolean mesh;
   
-  public Engine2D(int w, int h, Drawer drawer, boolean limits, boolean mesh) {
-    super(drawer, limits);
+  public Engine2D(String pattern, int w, int h, Drawer drawer, boolean limits, boolean mesh) {
+    super(pattern, drawer, limits);
     this.w = w + 2;
     this.h = h + 2;
     this.mesh = mesh;
@@ -65,11 +65,17 @@ public class Engine2D extends Engine {
         count++;
       }
     }
+    boolean result = false;
     if(board[i][j][0]) {
-      return count == 2 || count == 3;
+      for(int p = 0; p < alive.length; p++) {
+        result |= count == alive[p];
+      }
     } else {
-      return count == 3;
+      for(int p = 0; p < born.length; p++) {
+        result |= count == born[p];
+      }
     }
+    return result;
   }
   
   public void changeCell(int i, int j) {
@@ -94,14 +100,20 @@ public class Engine2D extends Engine {
   }
   
   public void drawMesh(int size) {
+    float total = (w - 2) * (h - 2);
+    float count = 0;
+    float pass = 360.0f / total;
+    colorMode(HSB, 360, 100, 100);
     for(int i = 1; i < w - 1; i++) {
       for(int j = 1; j < h - 1; j++) {
         if(board[i][j][0]) {
-          this.drawer.drawFillRect(i - 1, j - 1, size, size);
+          this.drawer.drawFillRect(i - 1, j - 1, size, size, color(pass * count, 100, 50));
         } else if(mesh) {
           this.drawer.drawEmptyRect(i - 1, j - 1, size, size);
         }
+        count++;
       }
     }
+    colorMode(RGB, 255,255,255);
   }
 }

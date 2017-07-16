@@ -4,9 +4,9 @@ public class Drawer {
   
   public Drawer() {}
   
-  public void drawFillRect(int i, int j, int w, int h) {
-    fill(blanco);
-    stroke(negro);
+  public void drawFillRect(int i, int j, int w, int h, color c) {
+    fill(c);
+    noStroke();
     rect((i * w), (j * h), w, h);
   }
   
